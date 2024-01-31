@@ -1,10 +1,10 @@
 const cards = ['🐱', '🐶', '🐰', '🦊', '🐼', '🐯', '🦁', '🐵','🐱', '🐶', '🐰', '🦊', '🐼', '🐯', '🦁', '🐵'];
-
+//initializing variables
     let flippedCards = [];
     let matchedCards = [];
     let countdown = 30;
     let score = 0;
-
+//random shuffle of array 
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -13,15 +13,16 @@ const cards = ['🐱', '🐶', '🐰', '🦊', '🐼', '🐯', '🦁', '🐵','�
     }
 
 
-
+//main
     function createGameBoard() {
+        //the ui elements it gets
         const gameContainer = document.getElementById('game-container');
         const gameBoard = document.getElementById('game-board');
         const timerElement = document.getElementById('timer');
 
-
+        //shuffling the cards
         shuffleArray(cards);
-
+        //loops over the cards and gives each an event listener for a click (to flip the card)
         cards.forEach((card, index) => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
@@ -31,19 +32,20 @@ const cards = ['🐱', '🐶', '🐰', '🦊', '🐼', '🐯', '🦁', '🐵','�
             cardElement.addEventListener('click', flipCard);
             gameBoard.appendChild(cardElement);
         });
-
+        //shows the cards at first
         showCards();
+        //countdown starts
         const countdownInterval = setInterval(() => {
         countdown--;
         timerElement.textContent = countdown < 10 ? '0' + countdown : countdown;
-
+        //when the countdown hits 0 we hide the cards and unblock the clicks 
         if (countdown === 0) {
             clearInterval(countdownInterval);
             hideCards();
             clicksBlocked = false;
             enableCardClick();
         } else if (countdown === 10) {
-            timerElement.style.color = 'red'; 
+            timerElement.style.color = 'red'; //just sets the timer to red under 10
         }
       }, 1000);
     }
@@ -78,11 +80,11 @@ const cards = ['🐱', '🐶', '🐰', '🦊', '🐼', '🐯', '🦁', '🐵','�
 
         if (flippedCards.length < 2 && !flippedCards.includes(selectedCard)) {
             selectedCard.textContent = selectedCard.dataset.card;
-            selectedCard.style.backgroundColor = '#fff';
-            flippedCards.push(selectedCard);
+            selectedCard.style.backgroundColor = '#fff'; //the back of the card effect
+            flippedCards.push(selectedCard); // adds the flipper card to the pushed if the requirements are met
 
             if (flippedCards.length === 2) {
-                setTimeout(checkMatch, 1000);
+                setTimeout(checkMatch, 1000); // if there are two cards flipped then they must be checked
             }
         }
     }
@@ -108,5 +110,5 @@ const cards = ['🐱', '🐶', '🐰', '🦊', '🐼', '🐯', '🦁', '🐵','�
     }
 
 
-
+// start
     createGameBoard();
